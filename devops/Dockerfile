@@ -1,6 +1,10 @@
 FROM bitnami/php-fpm:8.3
 
+ARG USER
+
 COPY devops/bitnami.conf /opt/bitnami/php/etc/common.conf
+
+RUN sed -i s/USERNAME/${USER}/g /opt/bitnami/php/etc/common.conf
 
 WORKDIR /app
 
@@ -10,9 +14,7 @@ RUN apt install tar
 
 # RUN ls -la
 
-
-RUN useradd -ms /bin/bash ${USER}
-
+RUN useradd -ms /bin/bash $USER
 
 # # COPY glpi-10.0.14.tgz ./glpi-10.0.14.tgz
 
