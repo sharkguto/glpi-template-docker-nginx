@@ -1,0 +1,59 @@
+services:
+    db-maria:
+        #network_mode: host
+        restart: on-failure
+        build:
+            context: .
+            dockerfile: devops/maria.dockerfile
+        #command: postgres -c 'max_connections=500'
+        ports:
+            - "3306:3306"
+        networks:
+            - glpi-tier
+        environment:
+            - USER=${USER}
+            - MARIADB_ROOT_PASSWORD=xptocompany
+            - MARIADB_USER=xpto
+            - MARIADB_PASSWORD=xpto
+            - MARIADB_DATABASE=glpi_xpto
+            - TZ=GMT
+    glpixpto:
+        depends_on:
+            - db-maria
+        build:
+            context: .
+            dockerfile: devops/Dockerfile
+        # ports:
+        #     - "9000:9000"
+        networks:
+            - glpi-tier
+        volumes:
+            - ./glpi:/app:Z
+        environment:
+            - PHP_FPM_LISTEN_ADDRESS=
+            - PHP_DATE_TIMEZONE=UTC
+            - PHP_ENABLE_OPCACHE=0
+            - PHP_MAX_EXECUTION_TIME=
+            - PHP_MAX_INPUT_TIME=
+            - PHP_MAX_INPUT_VARS=
+            - PHP_MEMORY_LIMIT=2G
+            - PHP_POST_MAX_SIZE=10M
+            - PHP_UPLOAD_MAX_FILESIZE=10M
+    nginx:
+        build:
+            context: .
+            dockerfile: devops/nginx.dockerfile
+        depends_on:
+            - glpixpto
+            - db-maria
+        networks:
+            - glpi-tier
+        ports:
+            - "8042:80"
+            - "8043:443"
+        volumes:
+            - ./devops/nginx.conf:/opt/bitnami/nginx/conf/server_blocks/glpi.conf
+            - ./glpi:/app:ro
+
+networks:
+    glpi-tier:
