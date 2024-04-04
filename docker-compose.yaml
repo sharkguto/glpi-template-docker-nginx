@@ -6,26 +6,26 @@ services:
             context: .
             dockerfile: devops/maria.dockerfile
             args:
-                - USER=${USER}
+                - USERNAME=${USER}
         #command: postgres -c 'max_connections=500'
         ports:
             - "3306:3306"
         networks:
             - glpi-tier
         environment:
-            - MARIADB_ROOT_PASSWORD=xptocompany
-            - MARIADB_USER=xpto
-            - MARIADB_PASSWORD=xpto
-            - MARIADB_DATABASE=glpi_xpto
+            - MARIADB_ROOT_PASSWORD=xcompany
+            - MARIADB_USER=x123
+            - MARIADB_PASSWORD=x123
+            - MARIADB_DATABASE=glpi_db
             - TZ=GMT
-    glpixpto:
+    glpiserver:
         depends_on:
             - db-maria
         build:
             context: .
             dockerfile: devops/Dockerfile
             args:
-                - USER=${USER}
+                - USERNAME=${USER}
         # ports:
         #     - "9000:9000"
         networks:
@@ -47,9 +47,9 @@ services:
             context: .
             dockerfile: devops/nginx.dockerfile
             args:
-                - USER=${USER}
+                - USERNAME=${USER}
         depends_on:
-            - glpixpto
+            - glpiserver
             - db-maria
         networks:
             - glpi-tier
