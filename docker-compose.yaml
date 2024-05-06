@@ -1,5 +1,5 @@
 services:
-    db-maria:
+    db-x5:
         #network_mode: host
         restart: on-failure
         build:
@@ -20,7 +20,7 @@ services:
             - TZ=GMT
     glpiserver:
         depends_on:
-            - db-maria
+            - db-x5
         build:
             context: .
             dockerfile: devops/Dockerfile
@@ -50,7 +50,7 @@ services:
                 - USERNAME=${USER}
         depends_on:
             - glpiserver
-            - db-maria
+            - db-x5
         networks:
             - glpi-tier
         ports:
