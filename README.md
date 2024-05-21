@@ -25,4 +25,4 @@ docker exec -it $(docker ps | grep -i glpiserver | awk '{print $1}') bash
 
 |username|senha|
 |--------|-----|
-|glpi|glpi|
+|glpi    |glpi |
