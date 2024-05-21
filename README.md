@@ -29,6 +29,9 @@ docker exec -it $(docker ps | grep -i glpiserver | awk '{print $1}') bash
 
 ## configurar ldap
 
+ldaps://192.168.0.1:3268
+ldap://192.168.0.1:389
+
 setup > authentication > ldap directories > +add
 
 ```ldap
@@ -38,11 +41,22 @@ Connection Filter:
 
    (&(objectClass=user)(objectCategory=person)(!(userAccountControl:1.2.840.113556.1.4.803:=2)))
 
- BaseDN: dc=xcompany,dc=local
+ BaseDN: ou=x,dc=xcompany,dc=local
 
  RootDN: glpi_sync@ttc.local
 
  Login Field: samaccountname
 
  Synchronization Filed: objectguid
+```
+
+testar ldapsearch
+
+```bash
+ldapsearch \
+    -x -H 192.168.0.1 \
+    -D "user@x.local" \
+    -W \
+    -b "cn=users,dc=x,dc=local" \
+    -s sub "(cn=*)" cn mail sn
 ```
