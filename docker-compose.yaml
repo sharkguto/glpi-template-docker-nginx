@@ -54,7 +54,7 @@ services:
         networks:
             - glpi-tier
         ports:
-            - "8042:80"
+            - "8080:80"
             - "8043:443"
         volumes:
             - ./devops/nginx.conf:/opt/bitnami/nginx/conf/server_blocks/glpi.conf

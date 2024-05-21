@@ -26,3 +26,23 @@ docker exec -it $(docker ps | grep -i glpiserver | awk '{print $1}') bash
 |username|senha|
 |--------|-----|
 |glpi    |glpi |
+
+## configurar ldap
+
+setup > authentication > ldap directories > +add
+
+```ldap
+Connection Filter: 
+   (&(objectCategory=person)(objectclass=user))
+  or
+
+   (&(objectClass=user)(objectCategory=person)(!(userAccountControl:1.2.840.113556.1.4.803:=2)))
+
+ BaseDN: dc=xcompany,dc=local
+
+ RootDN: glpi_sync@ttc.local
+
+ Login Field: samaccountname
+
+ Synchronization Filed: objectguid
+```
