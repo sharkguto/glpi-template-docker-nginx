@@ -7,7 +7,7 @@ template docker nginx pra glpi
 - descompactar glpi e rodar
 
 ```bash
-tar zxvf glpi-10.0.14.tgz && docker-compose up --build
+tar zxvf glpi-10.0.15.tgz && docker-compose up --build
 ```
 
 - entrar no docker
